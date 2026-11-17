@@ -1,0 +1,44 @@
+
+using api.Data;
+using api.Models;
+
+namespace api.Repositories
+{
+    //The repository layer: the ONLY layer that talks to the database.
+    // It uses AppDbContext (Ef Core) to read and save Movie Entities
+    public class MovieRepository : IMovieRepository
+    {
+        private readonly AppDbContext _db;
+
+
+       //DI: we never write a "new AppDbContext()" ourselves.
+       //ASP.NET Core sees this constructor asks for one and passes it in for us.
+        public MovieRepository(AppDbContext db)
+        {
+            _db = db;
+        }
+
+        public List<Movie> GetAll()
+        {
+            //We are going into our DB -> Movies Table and returning all movies
+            return _db.Movies.ToList();
+        }
+
+
+        public Movie? GetById(int id)
+        {
+            //Find looks up a row by its primary key. It returns null if there is no match
+            return _db.Movies.Find(id);
+        }
+
+        public Movie Add(Movie movie)
+        {
+            //Add() only marks the movie as new. Nothing is in the database yet.
+            _db.Movies.Add(movie);
+            
+            //SaveChanges() sends INSERT to the database. After this, Movie row is filled in.
+            _db.SaveChanges();
+            return movie;
+        }
+    }
+}
