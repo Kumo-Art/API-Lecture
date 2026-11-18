@@ -1,4 +1,6 @@
 using api.Data;
+using api.Repositories;
+using api.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,11 @@ builder.Services.AddOpenApi();
 //the connection string "DatabaseConnection" is read from appsettings.json
  builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DatabaseConnection")));
 
+//Registering our repository for dependancy injection
+//Whenever a class asks for IMovieRepository give it our MovieRepository
+ builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+
+builder.Services.AddScoped<IMovieServices, MovieServices>();
 
 //EVerything above registers services. Build() creates the app
 //Everything below sets up what happens with each request

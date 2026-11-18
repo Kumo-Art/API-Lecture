@@ -18,3 +18,9 @@ DbContext (Ef Core)
     V
  Database
  ```   
+
+## Recap
+
+app.db we then created our models for our Database
+AppDbContext (what allows our API to talk to our Data).
+We ran our migrations
