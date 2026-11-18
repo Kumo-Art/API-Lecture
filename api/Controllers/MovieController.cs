@@ -50,8 +50,37 @@ namespace api.Controllers
         {
             MovieResponseDto movie = _services.Create(dto);
              
-            //CreatedAtAction
+            //CreatedAtAction sends 201, It uses GetById action and the new Id
+            //To build the location headers
             return CreatedAtAction(nameof(GetById), new {id = movie.Id}, movie);
+        }
+
+        [HttpPut("Update/{id}")]
+
+        public ActionResult<MovieResponseDto> Update(int id, [FromBody] UpdateMovieDto dto)
+        {
+            MovieResponseDto? movie = _services.Update(id, dto);
+
+            if(movie is null)
+            {
+                return NotFound(); //Movie is not found in database  -- send a 404
+            }
+
+            return Ok(movie);
+        }
+
+        [HttpDelete("delete/{id}")]
+        public IActionResult Delete(int id)
+        {
+             bool isDeleted = _services.Delete(id);
+
+             if(!isDeleted)
+            {
+                return NotFound();
+            }
+           
+           //This worked but nothing to send back -- sends back a 204 status code
+            return NoContent();
         }
     }
 }

@@ -40,5 +40,19 @@ namespace api.Repositories
             _db.SaveChanges();
             return movie;
         }
+
+        public void Update(Movie movie)
+        {    
+            //We mark the movie as changed, and then save those changes to the DB
+            _db.Movies.Update(movie);
+            _db.SaveChanges();
+        }
+
+        public void Delete(Movie movie)
+        {   
+            //We mark the movie for removal, then SaveChanges sends the delete.
+            _db.Movies.Remove(movie);
+            _db.SaveChanges();
+        }
     }
 }

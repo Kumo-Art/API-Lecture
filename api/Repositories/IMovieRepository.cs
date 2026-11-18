@@ -14,5 +14,9 @@ namespace api.Repositories
         //Returns one movie, or null if no movie has that id (That's what the ? means).
 
         Movie Add(Movie movie);
+
+        void Update(Movie movie);
+
+        void Delete(Movie movie);
     }
 }

@@ -73,5 +73,42 @@ namespace api.Services
                 ReleaseYear = movie.ReleaseYear
             };
         }
+
+        public MovieResponseDto? Update(int id, UpdateMovieDto dto)
+        {
+            //We must first load the movie from the database
+            Movie? entity = _repository.GetById(id);
+            
+            // if our id isnt in database we return null
+            if(entity is null)
+            {
+                return null;
+            }
+
+            entity.Title = dto.Title;
+            entity.Director = dto.Director;
+            entity.Rating = dto.Rating;
+            entity.ReleaseYear = dto.ReleaseYear;
+
+            //Record when this entity was last changed
+            entity.UpdatedAt = DateTime.UtcNow;
+            
+            _repository.Update(entity);
+
+            return ToDto(entity);
+        }
+
+        public bool Delete(int id)
+        {
+            Movie? entity = _repository.GetById(id);
+            if(entity is null)
+            {
+                //False tels our controller no movie was found -- send 404
+                return false;
+            }
+
+            _repository.Delete(entity);
+            return true;
+        }
     }
 }
