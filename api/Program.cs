@@ -22,6 +22,10 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IMovieServices, MovieServices>();
 
+builder.Services.AddScoped<IActorsRepository, ActorsRepository>();
+
+builder.Services.AddScoped<IActorsServices, ActorsServices>();
+
 //EVerything above registers services. Build() creates the app
 //Everything below sets up what happens with each request
 var app = builder.Build();
