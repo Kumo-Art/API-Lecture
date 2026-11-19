@@ -441,3 +441,4 @@ C:\Users\brand\OneDrive\Desktop\CSA-Level-Two\Homework\API-Lecture-Actors-Brando
 C:\Users\brand\OneDrive\Desktop\CSA-Level-Two\Homework\API-Lecture-Actors-Brandon-Langehennig\api\obj\Debug\net10.0\api.csproj.Up2Date
 C:\Users\brand\OneDrive\Desktop\CSA-Level-Two\Homework\API-Lecture-Actors-Brandon-Langehennig\api\obj\Debug\net10.0\api.genruntimeconfig.cache
 C:\Users\brand\OneDrive\Desktop\CSA-Level-Two\Homework\API-Lecture-Actors-Brandon-Langehennig\api\obj\Debug\net10.0\ref\api.dll
+C:\Users\brand\OneDrive\Desktop\CSA-Level-Two\Lectures\API-Lecture\api\obj\Debug\net10.0\api.sourcelink.json
