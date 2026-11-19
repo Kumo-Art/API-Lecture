@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie Watchlist</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Movie Watchlist</h1>
+      <!-- script.js puts the movie count, or an error message, in here. -->
+      <p id="status">Loading…</p>
+
+      <!-- Submitting this form sends POST /api/movies. "required" stops empty fields. -->
+      <form id="movie-form">
+        <input id="title" placeholder="Title" required />
+        <input id="director" placeholder="Director" required />
+        <input id="year" type="number" placeholder="Year" required />
+        <input id="rating" type="number" min="1" max="10" placeholder="Rating" required />
+        <button>Add movie</button>
+      </form>
+
+      <!-- Empty for now. script.js fills it with one <li> per movie from GET /api/movies. -->
+      <ul id="movies"></ul>
+    </main>
+
+    <!-- Load the script last, so every element above already exists when it runs. -->
+    <script src="./js/script.js"></script>
+  </body>
+</html>
