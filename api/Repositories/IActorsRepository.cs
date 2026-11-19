@@ -5,14 +5,14 @@ namespace api.Repositories
 {
     public interface IActorsRepository
     {
-        List<Actors> GetAll();
+        Task<List<Actors>> GetAllAsync();
 
-        Actors? GetById(int id);
+        Task<Actors?> GetByIdAsync(int id);
 
-        Actors Add(Actors actor);
+        Task<Actors> AddAsync(Actors actor);
 
-        void Update(Actors actor);
+        Task UpdateAsync(Actors actor);
 
-        void Delete(Actors actor);
+        Task DeleteAsync(Actors actor);
     }
 }

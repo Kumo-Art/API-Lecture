@@ -16,7 +16,7 @@ namespace api.Services
         {
             _repository = repository;
         }
-        public MovieResponseDto Create(CreateMovieDto dto)
+        public async Task<MovieResponseDto> CreateAsync(CreateMovieDto dto)
         {
             Movie movie = new Movie();
             movie.Title = dto.Title;
@@ -24,22 +24,27 @@ namespace api.Services
             movie.ReleaseYear = dto.ReleaseYear;
             movie.Rating = dto.Rating;
 
-            Movie saved = _repository.Add(movie);
+            Movie saved = await _repository.AddAsync(movie);
             //Sending back the same movie but now with an Id
             return ToDto(saved);
         }
 
-        public List<MovieResponseDto> GetAll()
+
+
+        //This method awaits the repository layer, so it HAS to be async and return a Task Too.
+        //Once the bottom layer is async, every layer that calls it becomes async as well
+        public async Task<List<MovieResponseDto>> GetAllAsync()
         {
-          List<Movie> movies =  _repository.GetAll();
+            // await waits for the database without blocking the thread.
+          List<Movie> movies = await  _repository.GetAllAsync();
             
-           //turning every element in this list into dto
+           //turning every Movie entity into a MovieResponseDto
             return movies.Select(ToDto).ToList();
         }
 
-        public MovieResponseDto? GetById(int id)
+        public async Task<MovieResponseDto?> GetByIdAsync(int id)
         {
-            Movie? movie = _repository.GetById(id);
+            Movie? movie = await _repository.GetByIdAsync(id);
             //If there is no movie pass null up to the controller
             if(movie is null)
             {
@@ -48,7 +53,45 @@ namespace api.Services
             return ToDto(movie);
         }
 
-        //We will create helper function that maps our Dtos
+       
+        public async Task<MovieResponseDto?> UpdateAsync(int id, UpdateMovieDto dto)
+        {
+            //We must first load the movie from the database
+            Movie? entity = await _repository.GetByIdAsync(id);
+            
+            // if our id isnt in database we return null
+            if(entity is null)
+            {
+                return null;
+            }
+
+            entity.Title = dto.Title;
+            entity.Director = dto.Director;
+            entity.Rating = dto.Rating;
+            entity.ReleaseYear = dto.ReleaseYear;
+
+            //Record when this entity was last changed
+            entity.UpdatedAt = DateTime.UtcNow;
+            
+             await _repository.UpdateAsync(entity);
+
+            return ToDto(entity);
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            Movie? entity = await _repository.GetByIdAsync(id);
+            if(entity is null)
+            {
+                //False tels our controller no movie was found -- send 404
+                return false;
+            }
+
+             await _repository.DeleteAsync(entity);
+            return true;
+        }
+
+         //We will create helper function that maps our Dtos
         //private because it doesn't need to be accessed outside of our class
         //static because it doesn't have access to instance data
         private static MovieResponseDto ToDto(Movie movie)
@@ -74,41 +117,5 @@ namespace api.Services
             };
         }
 
-        public MovieResponseDto? Update(int id, UpdateMovieDto dto)
-        {
-            //We must first load the movie from the database
-            Movie? entity = _repository.GetById(id);
-            
-            // if our id isnt in database we return null
-            if(entity is null)
-            {
-                return null;
-            }
-
-            entity.Title = dto.Title;
-            entity.Director = dto.Director;
-            entity.Rating = dto.Rating;
-            entity.ReleaseYear = dto.ReleaseYear;
-
-            //Record when this entity was last changed
-            entity.UpdatedAt = DateTime.UtcNow;
-            
-            _repository.Update(entity);
-
-            return ToDto(entity);
-        }
-
-        public bool Delete(int id)
-        {
-            Movie? entity = _repository.GetById(id);
-            if(entity is null)
-            {
-                //False tels our controller no movie was found -- send 404
-                return false;
-            }
-
-            _repository.Delete(entity);
-            return true;
-        }
     }
 }

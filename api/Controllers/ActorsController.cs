@@ -19,16 +19,16 @@ namespace api.Controllers
 
         [HttpGet]
 
-        public ActionResult<List<ActorsResponseDto>> GetAll()
+        public async Task<ActionResult<List<ActorsResponseDto>>> GetAll()
         {
-            return Ok(_services.GetAll());
+            return Ok(await _services.GetAllAsync());
         }
 
         [HttpGet("GetById/{id}")]
 
-        public ActionResult<ActorsResponseDto> GetById(int id)
+        public async Task<ActionResult<ActorsResponseDto>> GetById(int id)
         {
-            ActorsResponseDto? actors = _services.GetById(id);
+            ActorsResponseDto? actors = await _services.GetByIdAsync(id);
 
             if(actors is null)
             {
@@ -40,18 +40,18 @@ namespace api.Controllers
 
         [HttpPost("AddActor")]
 
-        public ActionResult<ActorsResponseDto> AddActor([FromBody] CreateActorsDto dto)
+        public async Task<ActionResult<ActorsResponseDto>> AddActor([FromBody] CreateActorsDto dto)
         {
-            ActorsResponseDto actor = _services.Create(dto);
+            ActorsResponseDto actor = await _services.CreateAsync(dto);
 
             return CreatedAtAction(nameof(GetById), new {id = actor.Id}, actor);
         }
 
         [HttpPut("Update/{id}")]
 
-        public ActionResult<ActorsResponseDto> Update(int id, [FromBody] UpdateActorsDto dto)
+        public async Task<ActionResult<ActorsResponseDto>> Update(int id, [FromBody] UpdateActorsDto dto)
         {
-            ActorsResponseDto? actor = _services.Update(id, dto);
+            ActorsResponseDto? actor = await _services.UpdateAsync(id, dto);
 
             if(actor is null)
             {
@@ -62,9 +62,9 @@ namespace api.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-             bool isDeleted = _services.Delete(id);
+             bool isDeleted = await _services.DeleteAsync(id);
 
              if(!isDeleted)
             {

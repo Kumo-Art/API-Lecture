@@ -6,14 +6,14 @@ namespace api.Services
 {
     public interface IActorsServices
     {
-        List<ActorsResponseDto> GetAll();
+        Task<List<ActorsResponseDto>> GetAllAsync();
 
-        ActorsResponseDto? GetById(int id);
+        Task<ActorsResponseDto?> GetByIdAsync(int id);
 
-        ActorsResponseDto Create(CreateActorsDto dto);
+        Task<ActorsResponseDto> CreateAsync(CreateActorsDto dto);
 
-        ActorsResponseDto? Update(int id, UpdateActorsDto dto);
+        Task<ActorsResponseDto?> UpdateAsync(int id, UpdateActorsDto dto);
 
-        bool Delete(int id);
+        Task<bool> DeleteAsync(int id);
     }
 }

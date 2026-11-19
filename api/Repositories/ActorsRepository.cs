@@ -1,6 +1,7 @@
 
 using api.Data;
 using api.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace api.Repositories
@@ -15,38 +16,38 @@ namespace api.Repositories
             _db = db;
         }
 
-        public List<Actors> GetAll()
+        public async Task<List<Actors>> GetAllAsync()
         {
-            return _db.Actors.ToList();
+            return await _db.Actors.ToListAsync();
         }
 
-        public Actors? GetById(int id)
+        public async Task<Actors?> GetByIdAsync(int id)
         {
-            return _db.Actors.Find(id);
+            return await _db.Actors.FindAsync(id);
         }
-        public Actors Add(Actors actor)
+        public async Task<Actors> AddAsync(Actors actor)
         {
             _db.Actors.Add(actor);
 
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
 
             return actor;
         }
 
-        public void Delete(Actors actor)
+        public async Task DeleteAsync(Actors actor)
         {
             _db.Actors.Remove(actor);
 
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
 
         
 
-        public void Update(Actors actor)
+        public async Task UpdateAsync(Actors actor)
         {
             _db.Actors.Update(actor);
 
-            _db.SaveChanges();
+           await _db.SaveChangesAsync();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace api.Services
         {
             _repository = repository;
         }
-        public ActorsResponseDto Create(CreateActorsDto dto)
+        public async Task<ActorsResponseDto> CreateAsync(CreateActorsDto dto)
         {
             Actors actor = new Actors();
 
@@ -22,21 +22,21 @@ namespace api.Services
             actor.Country = dto.Country;
             actor.BirthYear = dto.BirthYear;
 
-            Actors saved = _repository.Add(actor);
+            Actors saved = await _repository.AddAsync(actor);
 
             return ToDto(saved);
         }
 
-        public List<ActorsResponseDto> GetAll()
+        public async Task<List<ActorsResponseDto>> GetAllAsync()
         {
-            List<Actors> actors = _repository.GetAll();
+            List<Actors> actors =  await _repository.GetAllAsync();
 
             return actors.Select(ToDto).ToList();
         }
 
-        public ActorsResponseDto? GetById(int id)
+        public async Task<ActorsResponseDto?> GetByIdAsync(int id)
         {
-           Actors? actor = _repository.GetById(id);
+           Actors? actor = await _repository.GetByIdAsync(id);
 
            if(actor is null)
             {
@@ -46,9 +46,9 @@ namespace api.Services
             return ToDto(actor);
         }
 
-        public ActorsResponseDto? Update(int id, UpdateActorsDto dto)
+        public async Task<ActorsResponseDto?> UpdateAsync(int id, UpdateActorsDto dto)
         {
-            Actors? actor = _repository.GetById(id);
+            Actors? actor = await _repository.GetByIdAsync(id);
 
             if(actor is null)
             {
@@ -61,20 +61,20 @@ namespace api.Services
 
             actor.UpdatedAt = DateTime.UtcNow;
 
-            _repository.Update(actor);
+            await _repository.UpdateAsync(actor);
 
             return ToDto(actor);
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            Actors? actor = _repository.GetById(id);
+            Actors? actor = await _repository.GetByIdAsync(id);
 
             if(actor is null)
             {
                 return false;
             }
-             _repository.Delete(actor);
+             await _repository.DeleteAsync(actor);
              
             return true;
         }
