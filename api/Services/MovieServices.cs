@@ -16,8 +16,18 @@ namespace api.Services
         {
             _repository = repository;
         }
-        public async Task<MovieResponseDto> CreateAsync(CreateMovieDto dto)
+        public async Task<MovieResponseDto?> CreateAsync(CreateMovieDto dto)
         {
+
+          List<Movie> movies = await _repository.GetAllAsync();
+
+        bool exist = movies.Any(m => m.Title.ToLower() == dto.Title.ToLower());
+
+        if (exist)
+            {
+                return null;
+            }
+
             Movie movie = new Movie();
             movie.Title = dto.Title;
             movie.Director = dto.Director;
@@ -29,7 +39,14 @@ namespace api.Services
             return ToDto(saved);
         }
 
+        //  public async Task<bool> Exists(CreateMovieDto dto)
+        // {
+        //     List<Movie> movies = await _repository.GetAllAsync();
 
+        //     bool exist = movies.Any(m => m.Title.ToLower() == dto.Title.ToLower());
+
+        //     return exist;
+        // }
 
         //This method awaits the repository layer, so it HAS to be async and return a Task Too.
         //Once the bottom layer is async, every layer that calls it becomes async as well

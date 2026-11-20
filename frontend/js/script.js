@@ -89,6 +89,10 @@ const createMovie = async (newMovie) => {
         headers: { "Content-Type": "application/json"},
         body: JSON.stringify(newMovie)
     });
+    if(!res.ok) {
+        status.textContent = "Movie already exists within the database.";
+        throw new error(`res.status`)
+    }
     const data = await res.json();
     console.log(data);
 }

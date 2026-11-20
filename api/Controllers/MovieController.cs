@@ -54,7 +54,17 @@ namespace api.Controllers
         [HttpPost("AddMovie")]
         public async Task<ActionResult<MovieResponseDto>> AddMovie([FromBody] CreateMovieDto dto)
         {
-            MovieResponseDto movie = await _services.CreateAsync(dto);
+            // if(await _services.Exists(dto))
+            // {
+            //     return Conflict("The movie with that title already exists.");
+            // }
+
+            MovieResponseDto? movie = await _services.CreateAsync(dto);
+
+            if(movie is null)
+            {
+                return Conflict(new { status = "The movie with that title already exists."});
+            }
              
             //CreatedAtAction sends 201, It uses GetById action and the new Id
             //To build the location headers

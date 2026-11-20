@@ -1,5 +1,6 @@
 //This Services interface is a list of jobs that our services must implament
 // Our Services speak in DTO, So the controller never touches the Entity.
+using System.Runtime.CompilerServices;
 using api.Dtos;
 
 namespace api.Services
@@ -13,7 +14,7 @@ namespace api.Services
 
         Task<MovieResponseDto?> GetByIdAsync(int id);
 
-        Task<MovieResponseDto> CreateAsync(CreateMovieDto dto);
+        Task<MovieResponseDto?> CreateAsync(CreateMovieDto dto);
 
        
        //This will return null if the movie doesn't exist
@@ -21,5 +22,7 @@ namespace api.Services
 
        //Returns true if the movie is deleted
         Task<bool> DeleteAsync(int id);
+
+        //Task<bool> Exists(CreateMovieDto dto);
     }
 }
